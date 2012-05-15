@@ -4,8 +4,6 @@
 # Christian Genco
 require 'time'
 
-# TESTING DEVELOPMENT BRANCH
-
 # Configuration
 now       = Time.now
 @data_dir = File.join(Dir.home, '.ttimetracker')
