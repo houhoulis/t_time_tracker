@@ -5,7 +5,6 @@
 require 'time'
 
 # TESTING DEVELOPMENT BRANCH
-# test2
 
 # Configuration
 now       = Time.now
