@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>
+  File: README
+  
+    &mdash; Documentation by YARD 0.8.1
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><div id='filecontents'><h1>t-time-tracker</h1>
+
+<p>Simple command line time tracking.</p>
+
+<h2>To install</h2>
+
+<pre class="code ruby"><code>cd /usr/local/bin/ &amp;&amp; wget https://raw.github.com/christiangenco/t-time-tracker/master/t --no-check-certificate &amp;&amp; chmod 755 t
+</code></pre>
+
+<p>Depends on <a href="http://www.ruby-lang.org/en/downloads/">Ruby</a> and the <a href="https://github.com/mojombo/chronic">Chronic</a> gem (if you want to use custom times: <code>gem install chronic</code>).</p>
+
+<h3>On Windows</h3>
+
+<p>Save <a href="https://raw.github.com/christiangenco/t-time-tracker/master/t">t.rb</a> somewhere in your <a href="http://www.computerhope.com/issues/ch000549.htm">path</a>.</p>
+
+<h2>To use</h2>
+
+<p>Show current task:</p>
+
+<pre class="code ruby"><code>$ t
+In progress: publishing t-time-tracker to GitHub (0:11)
+</code></pre>
+
+<p>Start a new task and finish previous</p>
+
+<pre class="code ruby"><code>$ t writing t-time-tracker README 
+Finished: publishing t-time-tracker to GitHub (0:12)
+Started: writing t-time-tracker README (now)
+</code></pre>
+
+<p>Start a task at a custom time (powered by <a href="https://github.com/mojombo/chronic">Chronic</a>)</p>
+
+<pre class="code ruby"><code>$ t took a break --at 5 minutes ago
+Finished: writing t-time-tracker README (0:23)
+Started: took a break (at 10:25pm)
+</code></pre>
+
+<p>Stop a task, without starting a new one</p>
+
+<pre class="code ruby"><code>$ t stop
+$ t done
+$ t d
+Finished: took a break (0:05)
+</code></pre>
+
+<p>Edit tasks with your <code>$EDITOR</code></p>
+
+<pre class="code ruby"><code>$ t edit
+$ t e
+# change &quot;took a break&quot; to &quot;napping&quot; in Sublime Text 2, my $EDITOR
+</code></pre>
+
+<p>Resume the last stopped/done task</p>
+
+<pre class="code ruby"><code>$ t resume
+$ t r
+Resuming napping
+</code></pre>
+
+<p>List today's tasks</p>
+
+<pre class="code ruby"><code>$ t list
+$ t l
+ 2:22-11:44am: sleep (9:21)
+11:51-12:49pm: email (0:58)
+ 2:00- 2:30pm: lunch (0:30)
+ 3:07- 3:10pm: HN (0:02)
+ 8:55-       : adding list to t-time-tracker (0:23)
+</code></pre>
+
+<h2>To view</h2>
+
+<p>Daily csv files are created in month and year folders in ~/.ttimetracker in the format:</p>
+
+<pre class="code ruby"><code>.ttimetracker/
+  2012/
+    05_May/
+      2012-05-02.csv
+      2012-05-03.csv
+      2012-05-04.csv
+      2012-05-05.csv
+      2012-05-06.csv
+      ...
+    06_June/
+    ...
+  ...
+</code></pre>
+
+<p>In each .csv file there are three columns representing the start time, end time, and description:</p>
+
+<pre class="code ruby"><code>14:00:13, 14:30:47, making lunch
+15:07:21, 15:10:13, HN
+18:25:40, 18:35:08, learning how to cat daddy
+</code></pre>
+
+<p>One day I may build a nicer way to view them.</p>
+
+<h2>Customize</h2>
+
+<p>By default, logs are stored in <code>~/.ttimetracker/</code>. This can be changed by editing the line:</p>
+
+<pre class="code ruby"><code><span class='ivar'>@data_dir</span> <span class='op'>=</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='const'>Dir</span><span class='period'>.</span><span class='id identifier rubyid_home'>home</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>.ttimetracker</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+</code></pre>
+
+<p>Directory naming and organization can also be changed by editing the lines:</p>
+
+<pre class="code ruby"><code><span class='ivar'>@dirname</span> <span class='op'>=</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='ivar'>@data_dir</span><span class='comma'>,</span> <span class='id identifier rubyid_now'>now</span><span class='period'>.</span><span class='id identifier rubyid_year'>year</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='comma'>,</span> <span class='id identifier rubyid_now'>now</span><span class='period'>.</span><span class='id identifier rubyid_strftime'>strftime</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>%m_%b</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+<span class='ivar'>@filename</span> <span class='op'>=</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='ivar'>@dirname</span><span class='comma'>,</span> <span class='id identifier rubyid_now'>now</span><span class='period'>.</span><span class='id identifier rubyid_strftime'>strftime</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>%Y-%m-%d</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>.csv</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+</code></pre>
+
+<p>See the ruby doc for <a href="http://www.ruby-doc.org/core-1.9.3/Time.html#method-i-strftime">strftime</a> for help in changing the date format.</p>
+
+<h2>Similar Projects</h2>
+
+<ul>
+<li><a href="https://github.com/DanielVF">DanielVF</a>'s <a href="https://github.com/DanielVF/d-time-tracker">d-time-tracker</a> (ruby cli; what this project was forked from!)</li>
+<li><a href="https://github.com/mcmire">mcmire</a>'s <a href="https://github.com/mcmire/time_tracker">time_tracker</a> (ruby cli)</li>
+<li><a href="https://github.com/ymendel">ymendel</a>'s <a href="https://github.com/ymendel/one_inch_punch">one<em>inch</em>punch</a> (ruby gem)</li>
+<li><a href="https://github.com/samg">samg</a>'s <a href="https://github.com/samg/timetrap">timetrap</a> (ruby cli)</li>
+<li><a href="http://rubydoc.info/gems/timetrackr/0.2.0/frames">timetrackr</a> (ruby cli)</li>
+<li><a href="https://bitbucket.org/trevor/timebook/src/">timebook</a> (python)</li>
+<li><a href="http://letsfreckle.com/">freckle</a> (webapp; $12/month)</li>
+<li><a href="http://www.getharvest.com/">HarvestApp</a> (webapp; $12/month)</li>
+<li><a href="https://paydirtapp.com">paydirt</a> (webapp; $10/month)</li>
+</ul>
+
+
+<p><img src="https://bellbot.com/js/?code=1059968237" width="0" height="0" /></p></div></div>
+
+    <div id="footer">
+  Generated on Tue May 15 23:35:35 2012 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.1 (ruby-1.9.2).
+</div>
+
+  </body>
+</html>
