@@ -1,2 +1,8 @@
-use reasonable option parser: OptionParser, Slop (https://github.com/injekt/slop), Shebang (https://github.com/YorickPeterse/shebang)
+use reasonable option parser: OptionParser (http://ruby-doc.org/stdlib-1.9.3/libdoc/optparse/rdoc/OptionParser.html), Slop (https://github.com/injekt/slop), Shebang (https://github.com/YorickPeterse/shebang)
 namespace with "module T"
+
+YARD doc: http://yardoc.org/
+RDoc: http://rdoc.sourceforge.net/
+how to make your own gem: http://guides.rubygems.org/make-your-own-gem/
+methadone tutorial: https://github.com/davetron5000/methadone/wiki/Tutorial_Bootstrap
+what makes a good command line app: http://www.naildrivin5.com/blog/2012/04/01/the-nine-facets-of-an-awesome-command-line-app.html
