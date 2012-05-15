@@ -9,10 +9,9 @@ class TTimeTracker
   # @attribute subdirectory [String] the subdirectory in which the current task will be stored
   # @attribute filename [String] the full path to the log file of the current task
   # @attribute task [String] the users entered task
-  # @attribute at [Time] the time that the task started at
-  # @attribute from [Time] when setting a range, the starting DateTime
-  # @attribute to [Time] when setting a range, the ending DateTime
-  attr_accessor :directory, :subdirectory, :filename, :task, :at, :from, :to
+  # @attribute at [Time] the time that the task (or range) starts at
+  # @attribute to [Time] the time that the task (or range) ends at
+  attr_accessor :directory, :subdirectory, :filename, :task, :at, :to
 
   # A new instance of TTimeTracker.
   # @param [Hash] params Options hash
@@ -29,9 +28,8 @@ class TTimeTracker
     mkdir @subdirectory
   end
 
-  def at=(time_in_words)
-    require 'chronic'
-    @at = Chronic.parse(time_in_words, :context => :past)
+  def get_task(task)
+
   end
 
   private
@@ -48,12 +46,26 @@ class TTimeTracker
   # Converts an integer of minutes into a more human readable format.
   # 
   # @example
-  #   "format_minutes(95)" #=> "1:15"
-  #   "format_minutes(5)"  #=> "0:05"
+  #   format_minutes(95) #=> "1:15"
+  #   format_minutes(5)  #=> "0:05"
   # 
   # @param minutes [Integer] a number of minutes
   # @return [String] the formatted minutes
   def format_minutes(minutes)
     "#{minutes.to_i / 60}:#{'%02d' % (minutes % 60)}"
+  end
+
+  # Converts a Time object into a human readable condensed string.
+  # Options for strftime may be found here: 
+  # http://www.ruby-doc.org/core-1.9.3/Time.html#method-i-strftime
+  # 
+  # @example
+  #   time = Time.new   #=> 2012-05-16 00:32:31 +0800
+  #   format_time(time) #=> "00:32:31"
+  # 
+  # @param time [Time] a time
+  # @return [String] the formatted time
+  def format_time(time)
+    time.strftime("%H:%M:%S")
   end
 end
