@@ -44,8 +44,8 @@ class TTimeTracker
   # returns an array of hashed tasks between the specified times. Defaults to today.
   # @todo figure out how to make this work with an arbitrary directory structure
   # @param [Hash] params Options hash
-  # @option params [Symbol] :from the starting time, inclusive
-  # @option params [Symbol] :to the ending time, inclusive
+  # @option params [Symbol] :from the starting time; includes any task that starts after it (inclusive)
+  # @option params [Symbol] :to the ending time; includes any task that starts before it (inclusive)
   def tasks(params = {})
     require 'active_support/core_ext/time/calculations'
     require 'active_support/core_ext/date/calculations'
@@ -76,9 +76,9 @@ class TTimeTracker
     end
 
     # now filter out tasks that don't fall within the requested timespan
-    # tasks.delete_if{|t|
-    #   t[:start] < from #|| t[:start] > to
-    # }
+    tasks.delete_if{|t|
+      t[:start] < from || t[:start] > to
+    }
 
     tasks
   end
@@ -130,6 +130,8 @@ class TTimeTracker
   #   #=> {:start=>2012-05-16 14:32:00, :finish=>Time.now, :description=>"homework", :duration=>36}
   # 
   # @param line [String] the CSV stored task
+  # @param [Hash] params Options hash
+  # @option params [Symbol] :day the default day to assign to times parsed. Defaults to @now.
   # @return [{:start=>Time, :finish=>Time, :description=>String, :duration=>Integer}] the parsed data in the line
   def parse_task(line, params = {})
     def parse_time(time_string, day)
@@ -138,7 +140,7 @@ class TTimeTracker
       if time_string =~ /\d{4}-\d{2}-\d{2}/
         Time.parse(time_string)
       else
-        Time.parse(day.strftime("%F ") + data.shift)
+        Time.parse(day.strftime("%F ") + time_string)
       end
     end
 
