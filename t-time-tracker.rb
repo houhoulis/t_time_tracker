@@ -20,11 +20,10 @@ class TTimeTracker
   # @option params [Symbol] :subdirectory the subdirectory in which the current task will be stored
   # @option params [Symbol] :filename the full path to the log file of the current task
   def initialize(params = {})
-    @now          = params[:now] || Time.now
-    @directory    = params[:directory] || File.join(Dir.home, '.ttimetracker')
+    @now          = params[:now]          || Time.now
+    @directory    = params[:directory]    || File.join(Dir.home, '.ttimetracker')
     @subdirectory = params[:subdirectory] || File.join(@directory, now.year.to_s, now.strftime("%m_%b"), '')
-    @filename     = params[:filename] || File.join(@subdirectory, now.strftime('%Y-%m-%d') + '.csv')
-
+    @filename     = params[:filename]     || File.join(@subdirectory, now.strftime('%Y-%m-%d') + '.csv')
     self.class.mkdir @subdirectory
   end
 
@@ -54,7 +53,12 @@ class TTimeTracker
     from = params[:from] || Time.new.beginning_of_day
     # Time.parse(Time.new.strftime("%F 23:59:59 %z"))
     to   = params[:to]   || Time.new.end_of_day
-
+    # print "tasks params ="
+    # p params
+    print "tasks from ="
+    p from
+    print "tasks to ="
+    p to
     # ensure from < to
     from, to = [from, to].sort 
 
@@ -86,24 +90,29 @@ class TTimeTracker
   # equivalent to task(:last)
   def last_task; task(:last); end
 
-  def task=(task = {})
+  def save(task = {})
     # forget the last task
     last = File.join(@directory, "last")
     File.unlink(last) if File.exists?(last)
 
-    task[:at] ||= @now
+    task[:start] ||= @now
 
     # save this as the current task if it doesn't have an ending time
-    unless task[:to]
+    if !task[:finish]
       File.open(File.join(@directory, "current"),'w') do |f|
-        f.puts [task[:at], task[:description].strip].join(", ")
+        f.puts [format_time(task[:start]), task[:description].strip].join(", ")
       end
     else
-      # save directly to today's log
-      File.open(@filename,'w') do |f|
-        f.puts [task[:at], task[:to], task[:description].strip].join(", ")
+      # task has start and finish time, so append it to today's log...
+      File.open(@filename,'a') do |f|
+        f.puts [format_time(task[:start]), format_time(task[:finish]), task[:description].strip].join(", ")
       end
+
+      # ...and save it as "last" in case you want to resume it
+      File.rename(File.join(@directory, 'current'), File.join(@directory, 'last'))
     end
+
+    task
   end
 
   # Converts an integer of minutes into a more human readable format.
@@ -178,7 +187,7 @@ class TTimeTracker
   # 
   # @param time [Time] a time
   # @return [String] the formatted time
-  def self.format_time(time)
+  def format_time(time)
     time.strftime("%H:%M:%S")
   end
 end
