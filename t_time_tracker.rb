@@ -59,12 +59,6 @@ class TTimeTracker
     from = params[:from] || Time.new.beginning_of_day
     # Time.parse(Time.new.strftime("%F 23:59:59 %z"))
     to   = params[:to]   || Time.new.end_of_day
-    # print "tasks params ="
-    # p params
-    print "tasks from ="
-    p from
-    print "tasks to ="
-    p to
     # ensure from < to
     from, to = [from, to].sort 
 

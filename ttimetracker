@@ -32,6 +32,7 @@ parser   = OptionParser.new do |opt|
   end
 
   opt.on('-u', '--update', 'Check github for updates') do
+    puts "Please check manually at https://github.com/christiangenco/t-time-tracker"
     throw "Not yet implemented"
   end
 
