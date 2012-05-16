@@ -7,9 +7,9 @@ To install
 
     gem install t_time_tracker
 
-This installs a binary named `t_time_tracker`, but it is strongly recommended that you alias this in your `.bashrc` or `.zshrc` to `t`:
+This installs a binary named `t_time_tracker`, but it is strongly recommended that you alias this in your `.bashrc` to `t` to prevent extraneous typing:
 
-    alias t='t_time_tracker'
+    echo "alias t='t_time_tracker'" >> ~/.bashrc
 
 To use
 ------
