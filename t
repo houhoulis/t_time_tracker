@@ -30,7 +30,21 @@ parser   = OptionParser.new do |opt|
     throw "Not yet implemented"
   end
 
-
+  opt.on('-l', '--list', 'Print the tallied activities from --from to --to') do
+    total, linewidth = 0, 0
+    @tracker.tasks(:from => @from, :to => @to).each{ |task|
+      line = "#{task[:start].strftime('%l:%M')}-" +
+            "#{task[:finish] ? task[:finish].strftime('%l:%M%P') : ' '*7}: " +
+            "#{TTimeTracker.format_minutes task[:duration]}" +
+            " #{task[:description]} "
+      linewidth = [linewidth, line.length].max
+      puts line
+      total += task[:duration]
+    }
+    puts "-" * linewidth
+    puts "total".rjust(13) + ": " + TTimeTracker.format_minutes(total).to_s
+    exit
+  end
 
   opt.on('-e', '--edit', 'Edit saved daily task files with your $EDITOR') do
     STDERR.puts "opening #{@tracker.directory}"

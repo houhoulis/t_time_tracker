@@ -66,12 +66,9 @@ class TTimeTracker
       # TODO: make this work for arbitrary folder organisation structures
       subdirectory = File.join(@directory, now.year.to_s, now.strftime("%m_%b"), '')
       filename     = File.join(subdirectory, now.strftime('%Y-%m-%d') + '.csv')
-      p filename
       File.open(filename, 'r').each do |line|
-        print "."
         tasks << parse_task(line, :day => now)
       end if File.exists?(filename)
-      puts
       now = now.tomorrow
     end
 
