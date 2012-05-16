@@ -3,13 +3,14 @@
 
 require 'time'
 require 'optparse'
-load './t_time_tracker.rb'
+require 't_time_tracker'
 
 @tracker = TTimeTracker.new
 @options = {:from => nil, :to => nil, :filter => '', :done => false}
 parser   = OptionParser.new do |opt|
   opt.banner = "" +
-    "t-time-tracker: simple command line time tracking\n" +
+    "t-time-tracker: simple command line time tracking\n\n" +
+    "For more information, see the README at:\n"+
     "github.com/christiangenco/t-time-tracker\n\n" +
     "Usage:\n" +
     "  $ t-time-tracker TASK_DESCRIPTION [OPTIONS]\n" +
