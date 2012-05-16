@@ -40,6 +40,12 @@ class TTimeTracker
     end
   end
 
+  # equivalent to task(:current)
+  def current_task; task(:current); end
+
+  # equivalent to task(:last)
+  def last_task; task(:last); end
+
   # returns an array of hashed tasks between the specified times. Defaults to today.
   # @todo figure out how to make this work with an arbitrary directory structure
   # @param [Hash] params Options hash
@@ -84,12 +90,7 @@ class TTimeTracker
     tasks
   end
 
-  # equivalent to task(:current)
-  def current_task; task(:current); end
-
-  # equivalent to task(:last)
-  def last_task; task(:last); end
-
+  # warning: this will overwrite the current task. You need to save the current task before saving a new one.
   def save(task = {})
     # forget the last task
     last = File.join(@directory, "last")
