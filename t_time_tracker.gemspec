@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "activesupport", ["~> 3.2.1"]
   s.date        = '2012-05-16'
   s.summary     = "simple comand line time tracking"
-  s.description = "It's like a log file for your life. Keep track of everything from freelance project billing to how many hours per week you spend eating."
+  s.description = "Simple comand line time tracking - it's like a log file for your life. Keep track of everything from freelance project billing to how many hours per week you spend eating with `t reading about t_time_tracker --at 'five minutes ago'`"
   s.authors     = ["Christian Genco"]
   s.email       = '@cgenco'
   s.files       = ["lib/t_time_tracker.rb"]
