@@ -1,0 +1,15 @@
+Gem::Specification.new do |s|
+  s.name        = 't_time_tracker'
+  s.version     = '0.0.0'
+  s.add_runtime_dependency "chronic", ["~> 0.6.7"]
+  s.add_runtime_dependency "activesupport", ["~> 3.2.1"]
+  s.date        = '2012-05-16'
+  s.summary     = "simple comand line time tracking"
+  s.description = "It's like a log file for your life. Keep track of everything from freelance project billing to how many hours per week you spend eating."
+  s.authors     = ["Christian Genco"]
+  s.email       = '@cgenco'
+  s.files       = ["lib/t_time_tracker.rb"]
+  s.executables << 't_time_tracker'
+  s.homepage    =
+    'https://github.com/christiangenco/t_time_tracker'
+end
