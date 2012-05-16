@@ -23,44 +23,56 @@ Show current task:
   
 Start a new task and finish previous
   
-    $ t writing t-time-tracker README 
+    $ t checking email 
     Finished: publishing t-time-tracker to GitHub (0:12)
-    Started: writing t-time-tracker README (now)
+    Started: lunch (now)
   
 Start a task at a custom time (powered by [Chronic](https://github.com/mojombo/chronic))
 
-    $ t took a break --at 5 minutes ago
-    Finished: writing t-time-tracker README (0:23)
+    $ t took a break --at "5 minutes ago"
+    Finished: email (0:23)
     Started: took a break (at 10:25pm)
 
 Stop a task, without starting a new one
 
-    $ t stop
-    $ t done
-    $ t d
+    $ t --done
+    $ t --stop
+    $ t -d
     Finished: took a break (0:05)
   
 Edit tasks with your `$EDITOR`
 
-    $ t edit
-    $ t e
+    $ t --edit
+    $ t -e
     # change "took a break" to "napping" in Sublime Text 2, my $EDITOR
   
 Resume the last stopped/done task
 
-    $ t resume
-    $ t r
+    $ t --resume
+    $ t -r
     Resuming napping
 
 List today's tasks
 
-    $ t list
-    $ t l
-     2:22-11:44am: sleep (9:21)
-    11:51-12:49pm: email (0:58)
-     2:00- 2:30pm: lunch (0:30)
-     3:07- 3:10pm: HN (0:02)
-     8:55-       : adding list to t-time-tracker (0:23)
+    $ t --list
+     2:22-11:44am: 9:21 sleep
+    11:51-12:49pm: 0:58 email
+     2:00- 2:30pm: 0:30 lunch
+     3:07- 3:10pm: 4:32 HN
+     8:55-       : adding list to t_time_tracker (0:23)
+
+List last week's tasks
+
+    $ t --list --from "1 week ago" --to "yesterday at 5pm"
+    # 2012-05-06 #
+     2:22-11:44am: 9:22 sleep
+    11:51-12:49pm: 0:59 email
+     2:00- 2:30pm: 0:31 lunch
+     2:30- 3:00pm: 0:31 working
+    ...
+    # 2012-05-14 #
+    12:15-12:35am: 0:21 physiology lab
+    12:35- 1:14am: 0:40 starcraft
 
 To view
 -------
@@ -86,7 +98,7 @@ In each .csv file there are three columns representing the start time, end time,
     15:07:21, 15:10:13, HN
     18:25:40, 18:35:08, learning how to cat daddy
 
-One day I may build a nicer way to view them.
+You can open these in your `$EDITOR` with the command `t --edit`.
 
 Customize
 ---------
@@ -95,12 +107,7 @@ By default, logs are stored in `~/.ttimetracker/`. This can be changed by editin
 
     @data_dir = File.join(Dir.home, '.ttimetracker')
 
-Directory naming and organization can also be changed by editing the lines:
-
-    @dirname = File.join(@data_dir, now.year.to_s, now.strftime("%m_%b"), '')
-    @filename = File.join(@dirname, now.strftime('%Y-%m-%d') + '.csv')
-
-See the ruby doc for [strftime](http://www.ruby-doc.org/core-1.9.3/Time.html#method-i-strftime) for help in changing the date format.
+Customizing directory naming and organization will be supported in a future release.
 
 Similar Projects
 ------------
