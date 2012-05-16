@@ -11,7 +11,7 @@ class TTimeTracker
   # @attribute task [String] the users entered task
   # @attribute at [Time] the time that the task (or range) starts at
   # @attribute to [Time] the time that the task (or range) ends at
-  attr_accessor :directory, :subdirectory, :filename, :task, :at, :to, :now
+  attr_accessor :directory, :subdirectory, :filename, :task, :now #, :at, :to, :now
 
   # A new instance of TTimeTracker.
   # @param [Hash] params Options hash
@@ -37,8 +37,49 @@ class TTimeTracker
     File.open(task_filename,'r') do |f|
       line = f.gets
       return if line.nil?
-      parse_line(line)
+      parse_task(line)
     end
+  end
+
+  # returns an array of hashed tasks between the specified times. Defaults to today.
+  # @todo figure out how to make this work with an arbitrary directory structure
+  # @param [Hash] params Options hash
+  # @option params [Symbol] :from the starting time, inclusive
+  # @option params [Symbol] :to the ending time, inclusive
+  def tasks(params = {})
+    require 'active_support/core_ext/time/calculations'
+    require 'active_support/core_ext/date/calculations'
+
+    # Time.parse(Time.new.strftime("%F 0:00:00 %z"))
+    from = params[:from] || Time.new.beginning_of_day
+    # Time.parse(Time.new.strftime("%F 23:59:59 %z"))
+    to   = params[:to]   || Time.new.end_of_day
+
+    # ensure from < to
+    from, to = [from, to].sort 
+
+    tasks = []
+
+    # first, get every task for the correct days
+    now = from
+    while now <= to
+      # TODO: make this work for arbitrary folder organisation structures
+      subdirectory = File.join(@directory, now.year.to_s, now.strftime("%m_%b"), '')
+      filename     = File.join(subdirectory, now.strftime('%Y-%m-%d') + '.csv')
+      p filename
+      File.open(filename, 'r').each do |line|
+        tasks << parse_task(line)
+      end if File.exists?(filename)
+      
+      now = now.tomorrow
+    end
+
+    # now filter out tasks that don't fall within the requested timespan
+    tasks.delete_if{|t|
+      t[:start] < from #|| t[:start] > to
+    }
+
+    tasks
   end
 
   # equivalent to task(:current)
@@ -82,14 +123,14 @@ class TTimeTracker
   # Parses a comma separated stored task in csv form
   # 
   # @example
-  #   parse_line("12:56, 13:10, did the dishes") 
+  #   parse_task("12:56, 13:10, did the dishes") 
   #   #=> {:start=>2012-05-16 12:56:00, :finish=>2012-05-16 13:10:00, :description=>"did the dishes", :duration=>14}
-  #   parse_line("14:32, homework")
+  #   parse_task("14:32, homework")
   #   #=> {:start=>2012-05-16 14:32:00, :finish=>Time.now, :description=>"homework", :duration=>36}
   # 
   # @param line [String] the CSV stored task
   # @return [{:start=>Time, :finish=>Time, :description=>String, :duration=>Integer}] the parsed data in the line
-  def parse_line(line)
+  def parse_task(line)
     data = line.split(",").map(&:strip)
     start = Time.parse(data.shift)
 
