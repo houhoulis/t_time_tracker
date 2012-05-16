@@ -3,7 +3,7 @@
 
 require 'time'
 require 'optparse'
-load './t-time-tracker.rb'
+load './t_time_tracker.rb'
 
 @tracker = TTimeTracker.new
 @options = {:from => nil, :to => nil, :filter => '', :done => false}
