@@ -1,17 +1,15 @@
-# t-time-tracker
+# t_time_tracker
 
 Simple command line time tracking.
 
 To install
 ----------
 
-    cd /usr/local/bin/ && wget https://raw.github.com/christiangenco/t-time-tracker/master/t --no-check-certificate && chmod 755 t
+    gem install t_time_tracker
 
-Depends on [Ruby](http://www.ruby-lang.org/en/downloads/) and the [Chronic](https://github.com/mojombo/chronic) gem (if you want to use custom times: `gem install chronic`).
+This installs a binary named `t_time_tracker`, but it is strongly recommended that you alias this in your `.bashrc` or `.zshrc` to `t`:
 
-### On Windows
-
-Save [t.rb](https://raw.github.com/christiangenco/t-time-tracker/master/t) somewhere in your [path](http://www.computerhope.com/issues/ch000549.htm).
+    alias t='t_time_tracker'
 
 To use
 ------
