@@ -68,16 +68,17 @@ class TTimeTracker
       filename     = File.join(subdirectory, now.strftime('%Y-%m-%d') + '.csv')
       p filename
       File.open(filename, 'r').each do |line|
-        tasks << parse_task(line)
+        print "."
+        tasks << parse_task(line, :day => now)
       end if File.exists?(filename)
-      
+      puts
       now = now.tomorrow
     end
 
     # now filter out tasks that don't fall within the requested timespan
-    tasks.delete_if{|t|
-      t[:start] < from #|| t[:start] > to
-    }
+    # tasks.delete_if{|t|
+    #   t[:start] < from #|| t[:start] > to
+    # }
 
     tasks
   end
@@ -130,13 +131,24 @@ class TTimeTracker
   # 
   # @param line [String] the CSV stored task
   # @return [{:start=>Time, :finish=>Time, :description=>String, :duration=>Integer}] the parsed data in the line
-  def parse_task(line)
-    data = line.split(",").map(&:strip)
-    start = Time.parse(data.shift)
+  def parse_task(line, params = {})
+    def parse_time(time_string, day)
+      # if the time already has a date, parse that time
+      # else assign a date
+      if time_string =~ /\d{4}-\d{2}-\d{2}/
+        Time.parse(time_string)
+      else
+        Time.parse(day.strftime("%F ") + data.shift)
+      end
+    end
+
+    day   = params[:day] || @now
+    data  = line.split(",").map(&:strip)
+    start = parse_time(data.shift, day)
 
     if data.length == 2
       # if there are two more values, they are the finished time and the description
-      finish = Time.parse(data.shift)
+      finish = parse_time(data.shift, day)
     else 
       # otherwise the last value is the description; get finish elsewhere
       finish = @now
