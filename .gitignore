@@ -1,3 +1,6 @@
 # ignore experimentation directories
 t-time-tracker
 ttimetracker
+
+# ignore yard documentation files
+.yardoc
