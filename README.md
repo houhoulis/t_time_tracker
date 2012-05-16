@@ -17,12 +17,12 @@ To use
 Show current task:
 
     $ t
-    In progress: publishing t-time-tracker to GitHub (0:11)
+    In progress: publishing t_time_tracker to GitHub (0:11)
   
 Start a new task and finish previous
   
     $ t checking email 
-    Finished: publishing t-time-tracker to GitHub (0:12)
+    Finished: publishing t_time_tracker to GitHub (0:12)
     Started: lunch (now)
   
 Start a task at a custom time (powered by [Chronic](https://github.com/mojombo/chronic))
