@@ -80,7 +80,7 @@ parser   = OptionParser.new do |opt|
         puts "\texport EDITOR='mate' # for Textmate"
         exit
     end
-    
+
     # batch edit the logs
     `#{ENV['EDITOR']} #{@tracker.directory}`
     exit
@@ -91,6 +91,7 @@ parser.parse!
 
 if @options[:list]
   total, linewidth = 0, 0
+  time_per_task = Hash.new(0) if @options[:sum] || @options[:summary]
   day = nil
   # print "@options ="
   # p @options
@@ -109,9 +110,15 @@ if @options[:list]
     linewidth = [linewidth, line.length].max
     puts line
     total += task[:duration]
+    if time_per_task
+      time_per_task[task] += task[:duration]
+    end
   }
   puts "-" * linewidth
   puts "total".ljust(13) + ": " + TTimeTracker.format_minutes(total).to_s
+  time_per_task = time_per_task.sort {|a,b| a[0][:description] <=> b[0][:description] }
+  time_per_task.each do |task|
+    p "Total for #{task[0][:description]}: #{TTimeTracker.format_minutes(task[1]).to_s}"
   exit
 end
 
