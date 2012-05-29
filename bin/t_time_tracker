@@ -69,6 +69,11 @@ parser   = OptionParser.new do |opt|
     @options[:list] = true
   end
 
+  opt.on('-sum', '--summary', 'Include the cumulative time spent per task from --from to --to') do
+    @options[:list] = true
+    @options[:summary] = true
+  end
+
   opt.on('-e', '--edit', 'Edit saved daily task files with your $EDITOR') do
     STDERR.puts "opening #{@tracker.directory}"
 
@@ -91,7 +96,7 @@ parser.parse!
 
 if @options[:list]
   total, linewidth = 0, 0
-  time_per_task = Hash.new(0) if @options[:sum] || @options[:summary]
+  time_per_task = Hash.new(0) if @options[:summary]
   day = nil
   # print "@options ="
   # p @options
@@ -110,16 +115,20 @@ if @options[:list]
     linewidth = [linewidth, line.length].max
     puts line
     total += task[:duration]
-    if time_per_task
-      time_per_task[task] += task[:duration]
+    if time_per_task && !task[:description].blank?
+      time_per_task[task[:description]] += task[:duration]
     end
   }
   puts "-" * linewidth
   puts "total".ljust(13) + ": " + TTimeTracker.format_minutes(total).to_s
-  time_per_task = time_per_task.sort {|a,b| a[0][:description] <=> b[0][:description] }
-  time_per_task.each do |task|
-    p "Total for #{task[0][:description]}: #{TTimeTracker.format_minutes(task[1]).to_s}"
-  exit
+  if !time_per_task.blank?
+    time_per_task = time_per_task.sort {|a,b| a[0] <=> b[0] }
+    long_description = time_per_task.max_by {|item| item[0].length }[0].length
+    time_per_task.each do |task_arr|
+      print "- Total for #{task_arr[0]}: ".ljust(14 + long_description)
+      puts TTimeTracker.format_minutes(task_arr[1]).to_s
+    end
+  end
 end
 
 def start_task(task)
