@@ -1,4 +1,0 @@
-http://guides.rubygems.org/make-your-own-gem/
-
-gem build t_time_tracker.gemspec
-gem install ./t_time_tracker-0.0.0.gem
