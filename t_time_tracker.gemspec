@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 't_time_tracker'
-  s.version     = '0.0.1'
+  s.version     = '0.0.2'
   s.add_runtime_dependency "chronic", ["~> 0.6.7"]
   s.add_runtime_dependency "activesupport", ["~> 3.2.1"]
   s.date        = '2012-05-29'
